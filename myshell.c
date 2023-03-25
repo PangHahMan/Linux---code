@@ -23,15 +23,6 @@ int split(char *commandstr, char *argv[])
     return 0;
 }
 
-void debugPrint(char *argv[])
-{
-    int i = 0;
-    for (i = 0; argv[i]; i++)
-    {
-        printf("%d:%s\n", i, argv[i]);
-    }
-}
-
 void showEnv()
 {
     extern char **environ;
@@ -66,37 +57,38 @@ int main()
         int n = split(commandstr, argv);
         if (n != 0)
             continue;
-
+        
+        //cd 目录名   目录名就是argv[1]
         if (strcmp(argv[0], "cd") == 0)
         {
             if (argv[1] != NULL)
-                chdir(argv[1]);
+                chdir(argv[1]);   //int chdir(const char *path); 其中，path参数是要切换到的目标目录的路径名。如果切换成功，chdir()函数返回0；否则返回-1，
             continue;
         }
         else if (strcmp(argv[0], "export") == 0)
         {
             if (argv[1] != NULL)
             {
-                strcpy(myenv[env_index], argv[1]);
+                strcpy(myenv[env_index], argv[1]);  //将argv[1]的参数复制到myenv中，然后借助putenv上传环境变量，注意要将index++
                 putenv(myenv[env_index++]);
             }
             continue;
         }
         else if (strcmp(argv[0], "env") == 0)
         {
-            showEnv();
+            showEnv();  //打印env即可，借助C语言environ 环境变量表
             continue;
         }
         else if (strcmp(argv[0], "echo") == 0)
         {
-            // echo $PATH
+            // echo $PATH  echo ? 是获取最近的退出码
             const char *target_env = NULL;
             if (argv[1][0] == '$')
             {
                 //模拟$?  不是? 就是获取环境变量
                 if (argv[1][1] == '?')
                 {
-                    printf("%d\n", last_exit);
+                    printf("%d\n", last_exit);  //last_exit 就是父进程获取的退出码
                     continue;
                 }
                 else
@@ -107,7 +99,7 @@ int main()
                 if (target_env != NULL)
                 {
                     printf("%s=%s\n", argv[1] + 1, target_env);
-                }
+                }         
             }
             continue;
         }
@@ -117,11 +109,11 @@ int main()
         {
             // 在最后的位置加上--color=auto设置颜色
             int pos = 0;
+            //找最后的位置
             while (argv[pos])
                 pos++;
-            argv[pos] = (char *)"--color=auto";
+            argv[pos] = "--color=auto";
         }
-        // debugPrint(argv);
         //  让子进程去做
         pid_t id = fork();
         assert(id >= 0);
