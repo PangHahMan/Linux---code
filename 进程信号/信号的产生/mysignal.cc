@@ -8,6 +8,7 @@ using namespace std;
 void handler(int signo)
 {
     cout << "我们的进程确实收到了:" << signo << "信号导致崩溃的" << endl;
+    exit(0);
 }
 
 // a/0会崩溃    收到8信号
@@ -82,6 +83,6 @@ void test5()
 
 int main()
 {
-    test5();
+    test2();
     return 0;
 }
