@@ -1,6 +1,7 @@
 #include <pthread.h>
 #include <iostream>
 #include <unistd.h>
+#include <cstdio>
 using namespace std;
 
 void *thread1_run(void *args)
@@ -37,12 +38,11 @@ int main()
     pthread_create(&t1, NULL, thread1_run, NULL);
     pthread_create(&t2, NULL, thread2_run, NULL);
     pthread_create(&t2, NULL, thread3_run, NULL);
-    while(1)
+    while (1)
     {
         printf("我是主线程，我正在运行\n");
         sleep(1);
     }
-    
-    
+
     return 0;
 }
