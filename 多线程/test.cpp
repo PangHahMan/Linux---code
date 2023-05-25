@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <iostream>
 #include <unistd.h>
-#include <cstdio>
+
 using namespace std;
 
 void *thread1_run(void *args)
