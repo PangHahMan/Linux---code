@@ -55,7 +55,7 @@ void *productor(void *args) {
 //     return 0;
 // }
 
-//多线程
+//多生产者，多消费者
 int main() {
     srand((uint64_t) time(nullptr) ^ getpid());
     // BlockQueue<int> *bq = new BlockQueue<int>();
