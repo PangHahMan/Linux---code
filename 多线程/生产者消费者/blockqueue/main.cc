@@ -38,19 +38,41 @@ void *productor(void *args) {
     }
 }
 
+// int main() {
+//     srand((uint64_t) time(nullptr) ^ getpid());//获得一个随机数
+//     //BlockQueue<int> *bq = new BlockQueue<int>();
+//     BlockQueue<Task> *bq = new BlockQueue<Task>();
+//     //单生产和单消费
+//     pthread_t c, p;
+//     pthread_create(&c, nullptr, consumer, bq);
+//     pthread_create(&p, nullptr, productor, bq);
+
+
+//     pthread_join(c, nullptr);
+//     pthread_join(p, nullptr);
+
+//     delete bq;
+//     return 0;
+// }
+
+//多线程
 int main() {
-    srand((uint64_t) time(nullptr) ^ getpid());//获得一个随机数
-    //BlockQueue<int> *bq = new BlockQueue<int>();
+    srand((uint64_t) time(nullptr) ^ getpid());
+    // BlockQueue<int> *bq = new BlockQueue<int>();
     BlockQueue<Task> *bq = new BlockQueue<Task>();
-    //单生产和单消费
-    pthread_t c, p;
-    pthread_create(&c, nullptr, consumer, bq);
-    pthread_create(&p, nullptr, productor, bq);
+    // 单生产和单消费 -> 多生产和多消费
+    pthread_t c[2], p[3];
+    pthread_create(&c[0], nullptr, consumer, bq);
+    pthread_create(&c[1], nullptr, consumer, bq);
+    pthread_create(&p[0], nullptr, productor, bq);
+    pthread_create(&p[1], nullptr, productor, bq);
+    pthread_create(&p[2], nullptr, productor, bq);
 
-
-    pthread_join(c, nullptr);
-    pthread_join(p, nullptr);
-
+    pthread_join(c[0], nullptr);
+    pthread_join(c[1], nullptr);
+    pthread_join(p[0], nullptr);
+    pthread_join(p[1], nullptr);
+    pthread_join(p[2], nullptr);
     delete bq;
     return 0;
 }
