@@ -1,6 +1,6 @@
 .PHONY:thread
 .PHONY:clean
-cc:main.cc
+cp:main.cc
 	g++ -o $@ $^ -std=c++11 -lpthread
 
 clean:
